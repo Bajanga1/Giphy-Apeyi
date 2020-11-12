@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="tailwind\tailwind.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+
+            //https://api.tenor.com/v1/search?key=3DIFQNKHL0OQ&q=sleepy&limit=2//
+
+            //https:api.giphy.com/v1/gifs/search?api_key=4zv45wmD5vJvLn2UE3B4tNBY1ny9kZZV&//
+            //var searchUrl = 'https://api.tenor.com/v1/search?key=3DIFQNKHL0OQ&'//
+
+            var searchUrl = 'https://api.giphy.com/v1/gifs/search?api_key=4zv45wmD5vJvLn2UE3B4tNBY1ny9kZZV&'
+            $('#search').click(function() {
+                var limit = $('#limit').val();
+                var criteria = $('#criteria').val();
+                searchUrl += 'limit=' + limit + '&q=' + criteria
+                $.get(searchUrl, function(apiResponse) {
+                    console.log(apiResponse.data[0].images.original.url)
+                    var htmlImageArray = '';
+                    for (let index in apiResponse.results) {
+                        var imgurl = apiResponse.results[index].url;
+                        htmlImageArray += '<img src=' + imgurl + '/>';
+
+                    }
+                    console.log(htmlImageArray)
+                    $('#results').html(htmlImageArray)
+                })
+            })
+        })
+    </script>
+</head>
+
+<body class="bg-blue-900">
+    <header>
+        <div>
+            <div class="bg-gray-500 font-sans">
+                <div class="justify-center">
+                    <div class="inline-block text-grey-100 text-center bg-grey-400 px-4 py-2 m-2">
+                        <h1>Gifphy Apeyi!</h1>
+                    </div>
+                    <div class="inline-block text-grey-300 text-center bg-grey-400 pl-10 m-2">
+                        <input type="text" placeholder="search" id="criteria">
+                    </div>
+                    <div class="inline-block text-grey-100 text-center bg-grey-400 pl-10 m-2">
+                        Results on page
+                    </div>
+                    <div class="inline-block text-grey-100 text-center bg-grey-400 pr-10 m-2">
+                        <form action="/action_page.php">
+                            <select name="limit" id="limit">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </form>
+                    </div>
+                    <div class="inline-block text-grey-100 text-left bg-grey-400 p-0 m-0">
+                        <button class="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="search">Search!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-rows-3 bg-grey-400">
+            <div id="results"></div>
+        </div>
+
+    </header>
+
+
+
+
+
+</body>
